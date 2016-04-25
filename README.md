@@ -23,4 +23,7 @@
  
 ## 打包 gulp
   - 对模板文件所在路径（./views）下的less， js文件进行打包压缩，并将其放置在静态文件所在路径（./public）
- 
+
+## 运行
+ - npm start
+ - gulp build 前端页面，生产环境打包
