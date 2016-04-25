@@ -1,0 +1,34 @@
+{% extends './layout.html' %}
+
+{% block styleLink %}
+	<link rel="stylesheet" type="text/css" href="/static/template/start.min.css">
+{% endblock %}
+
+{% macro uploadForm(method='POST', url='', userType='text', userName='', 
+	userVal='', pwdType='password', pwdName='', pwdVal='') %}
+	<form action="{{ url }}" method="{{ method }}">
+		<label>User:</label>
+		<input type="{{ userTyp }}" name="{{ userName }}" value="{{ userVal }}"></input>
+		<br>
+		<label>Password:</label> 
+		<input type="{{ pwdType }}" name="{{ pwdName }}" value="{{ pwdVal }}"></input>
+		<br>
+		<input type="submit" value="Submit"></input>
+	</form>
+{% endmacro %}
+
+
+{% block content %}
+	<h1>Nunjucks Test</h1>
+	<h3>FORM Test</h3>
+	<div class="form-test">
+		{{ uploadForm(method='POST', url='./start', userName='user_name', pwdName='password') }}
+	</div>
+
+	<div class="result">
+		<h4>Result:</h4>
+		<p>UserName: {{ data.userName }} </p>
+		<p>Password: {{ data.password }}</p>
+	</div>
+
+{% endblock %}
