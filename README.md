@@ -22,7 +22,7 @@
  - RESTful： get， post， delete，数据增、删、查。 通过读取本地JSON文件实现
  - React 'Hello world' 实例
  
- 
+
 ## 打包配置
   - 所有配置项在文件 gulpfile.babel.js 中，
   - isDevEvn 配置环境，true为开发环境（代码不压缩），false 为生产环境（代码压缩,删除调试配置)
@@ -30,7 +30,7 @@
 
 
   >  1、'entry' 为不是采用webpack工具打包的路径，路径书写格式为从当前目录开始，例：'./views/template'
-  >  2、'webpackEntry' 为采用webpack工具打包的路径，采用webpack打包时入口文件命名必须为index.js，如果采用es6开发的话，采用webpack打包
+  >  2、'webpackEntry' 为采用webpack工具打包的路径，采用webpack打包时入口文件命名必须为index.js，如果采用es6开发的话，采用webpack打包    
   >  3、 'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径, 假如： 服务器静态文件路径为'./public'; 入口文件为： './views/template/index.js'; 非webpack打包方式，输出文件为：'./public/template/index.min.js'; webpack打包方式，输出文件为：'./public/template/index.bundle.js'
 
 ## 运行
