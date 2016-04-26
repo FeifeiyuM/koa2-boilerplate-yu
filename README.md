@@ -20,7 +20,7 @@
  - post 请求： 数据提交
  - 代理：即通过fetch api 代理请求接口数据
  - RESTful： get， post， delete，数据增、删、查。 通过读取本地JSON文件实现
- - React: 'Hello world' 实例
+ - React：'Hello world' 实例
  
 
 ## 打包配置
