@@ -27,9 +27,9 @@
   - 所有配置项在文件 gulpfile.babel.js 中，
   - isDevEvn 配置环境，true为开发环境（代码不压缩），false 为生产环境（代码压缩,删除调试配置)
   - 打包路径配置：
-  > - 'entry' 为不是采用webpack工具打包的路径，路径书写格式为从当前目录开始，例：'./views/template'
-  > - 'webpackEntry' 为采用webpack工具打包的路径，采用webpack打包时入口文件命名必须为index.js，如果采用es6开发的话，采用webpack打包
-  > - 'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径 
+  > 1、'entry' 为不是采用webpack工具打包的路径，路径书写格式为从当前目录开始，例：'./views/template'
+  > 2、'webpackEntry' 为采用webpack工具打包的路径，采用webpack打包时入口文件命名必须为index.js，如果采用es6开发的话，采用webpack打包
+  > 3、 'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径 
 
 ## 运行
  - npm start
