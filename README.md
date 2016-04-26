@@ -4,7 +4,8 @@
 - 核心采用koa2 node server框架，
 - 采用模板文件： [nunjucks]: https://mozilla.github.io/nunjucks/
 - HTTP请求代理: fetch-node
-- 打包： gulp
+- 打包： gulp，（webpack）
+
 
 ## KOA2：
  - 模板设置 （koa-nunjucks-promise ）
@@ -20,9 +21,15 @@
  - post 请求： 数据提交
  - 代理：即通过fetch api 代理请求接口数据
  - RESTful： get， post， delete，数据增、删、查。 通过读取本地JSON文件实现
- 
-## 打包 gulp
-  - 对模板文件所在路径（./views）下的less， js文件进行打包压缩，并将其放置在静态文件所在路径（./public）
+
+
+## 打包配置
+  - 所有配置项在文件 gulpfile.babel.js 中，
+  - isDevEvn 配置环境，true为开发环境（代码不压缩），false 为生产环境（代码压缩,删除调试配置)
+  - 打包路径配置：
+  > - 'entry' 为不是采用webpack工具打包的路径，路径书写格式为从当前目录开始，例：'./views/template'
+  > - 'webpackEntry' 为采用webpack工具打包的路径，采用webpack打包时入口文件命名必须为index.js，如果采用es6开发的话，采用webpack打包
+  > - 'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径 
 
 ## 运行
  - npm start

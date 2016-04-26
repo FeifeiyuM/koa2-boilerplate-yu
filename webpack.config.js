@@ -7,7 +7,7 @@ module.exports = {
       exclude:/node_modules/,
       include:__dirname,
       query:{
-        presets: ['es2015']  //如果react 开请在presets中加入'react'
+        presets: ['es2015', 'react']  
       }
     }, {
       test: /\.less$/,
