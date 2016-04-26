@@ -21,7 +21,7 @@ let dir = {
 	//配置路径时，尽量选择需要打包的路径，对已有的路径不要添加
 	entry: ['./views/template', './views/restful'],  //普通打包路径
 	
-	webpackEntry: ['./views/webpack', './views/webpack2'],  //webpack打包路径,路径下必须包含index.js
+	webpackEntry: ['./views/webpack', './views/react-test'],  //webpack打包路径,路径下必须包含index.js
 
 	output: './public',  //输出到静态文件所在路径
 }
@@ -110,7 +110,8 @@ let htmlReload = (entryFile) => {
 }
 //less to css
 gulp.task('less2css', () => {
-		let files = []
+	let files = []
+	//入口文件筛选
 	if(dir.entry.length === 0 || dir.entry === null 
 		|| dir.entry === undefined) {
 		throw ('[webpack]', 'entry path need to configurated ')
@@ -131,6 +132,7 @@ gulp.task('less2css', () => {
 //gulp 打包
 gulp.task('jsBuild', () => {
 	let files = []
+	//入口文件筛选
 	if(dir.entry.length === 0 || dir.entry === null 
 		|| dir.entry === undefined) {
 		throw ('[webpack]', 'entry path need to configurated ')
@@ -150,13 +152,14 @@ gulp.task('jsBuild', () => {
 
 //采用webpack 打包
 gulp.task('jsWebpack', () => {
-	let files = []
+	let files = [] 
+	//入口文件筛选
 	if(dir.webpackEntry.length === 0 || dir.webpackEntry === null 
 		|| dir.webpackEntry === undefined) {
 		throw ('[webpack]', 'entry path need to configurated ')
-	} else {
-		dir.webpackEntry.map((item, index) => {
-			let file = glob.sync(item + '/**/index.js')
+	} else { 
+		dir.webpackEntry.map((item, index) => {  
+			let file = glob.sync(item + '/**/index.js') 
 			if(file.length === 0) {
 				 throw ('[webpack]', 'in ' + item + ' a index.js file is needed!')
 			}
@@ -164,9 +167,10 @@ gulp.task('jsWebpack', () => {
 			
 		})
 	}
-	console.log('files: ', files.toString())
-	let entryFile = {}
-	files.map(( item, index ) => {
+	console.log('[webpack] files: ', files.toString())
+
+	let entryFile = {} //入口文件装配
+	files.map(( item, index ) => { 
 		 //第一个replace去掉文件后缀，第二个replace去掉第一个文件路径(/views)
 		let filePath = item.replace(/\.js/, '').replace(/\.?\/[a-zA-Z0-9_]+/, '') 
 		console.log('filePath: ' + filePath)

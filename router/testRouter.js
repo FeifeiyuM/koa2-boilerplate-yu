@@ -105,7 +105,11 @@ router.delete('/restful/deleteUser/:id', async (ctx, next) => {
 
 	ctx.status = 202
 	ctx.body = users  //配置响应数据
+})
 
+router.get('/react-test', async (ctx, next) => {
+	console.log(' in /react-test')
+	await ctx.render('react-test/index')
 })
 
 export default router
