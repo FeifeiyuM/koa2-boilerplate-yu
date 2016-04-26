@@ -1,5 +1,5 @@
 import koa from 'koa'
-import views from 'koa-nunjucks-promise'
+import nunjucksViews from 'koa-nunjucks-promise'
 import convert from 'koa-convert'
 import logger from 'koa-logger'
 import mount from 'koa-mount'
@@ -12,7 +12,7 @@ const app = new koa()
 
 console.log('in koa')
 
-app.use(views(`${__dirname}/views`, {  //模板插件
+app.use(nunjucksViews(`${__dirname}/views`, {  //模板插件
 	ext: 'html',
 	noCache: true,
 	watch: true,

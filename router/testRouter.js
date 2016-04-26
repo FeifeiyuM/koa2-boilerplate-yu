@@ -28,7 +28,7 @@ router.post('/start', async (ctx, next ) => {  //post请求
 	console.dir(ctx.request.body)
 	let data = reqParam
 	await ctx.render('template/start', {title: 'koa start', data: data } )
-})- 
+})
 
 let respTest = () => {
 	return 'ok'
