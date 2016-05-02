@@ -19,9 +19,8 @@ let isDevEnv = true  //是否为开发环境
 
 let dir = {
 	//配置路径时，尽量选择需要打包的路径，对已有的路径不要添加
-	entry: ['./views/template', './views/restful'],  //普通打包路径
-	
-	webpackEntry: ['./views/webpack', './views/react-test'],  //webpack打包路径,路径下必须包含index.js
+	entry: [],  //普通打包路径	
+	webpackEntry: ['./views/hug-app', './views/huge-app'],  //webpack打包路径,路径下必须包含index.js 根入口
 
 	output: './public',  //输出到静态文件所在路径
 }
@@ -61,18 +60,21 @@ let jsBuild = (entryFile, output, isdev) => {
 }
 
 let webpackBuild = (entryFile, outDir, isdev) => {
-	let wpConfig = Object.create(webpackConfig)
 
+	let wpConfig = Object.create(webpackConfig)
+	console.log()
 	wpConfig.devtool = isdev ? 'cheap-module-eval-source-map' : null
 	wpConfig.entry = entryFile
 	wpConfig.output = {
 		path: outDir, 
 		filename: '[name].bundle.js',
+		publicPath: '/static/'  //采用分片时需要“配置对”该路径
 	}
 	wpConfig.plugins = [  //插件配置
 		new webpack.optimize.OccurenceOrderPlugin(),
 	  	new webpack.HotModuleReplacementPlugin(),
 	  	new webpack.NoErrorsPlugin(),
+	  	new webpack.optimize.CommonsChunkPlugin('common/common.js'),
 	  	new webpack.optimize.UglifyJsPlugin({
 	      test: /(\.jsx|\.js)$/,
 	      compress: {warnings: false }
@@ -114,7 +116,7 @@ gulp.task('less2css', () => {
 	//入口文件筛选
 	if(dir.entry.length === 0 || dir.entry === null 
 		|| dir.entry === undefined) {
-		throw ('[webpack]', 'entry path need to configurated ')
+		console.log ('[less2css]', 'entry path need to configurated ')
 	} else {
 		dir.entry.map((item, index) => {
 			let file = glob.sync(item + '/**/*[^min].less')
@@ -135,7 +137,7 @@ gulp.task('jsBuild', () => {
 	//入口文件筛选
 	if(dir.entry.length === 0 || dir.entry === null 
 		|| dir.entry === undefined) {
-		throw ('[webpack]', 'entry path need to configurated ')
+		console.log ('[jsBuild]', 'entry path need to configurated ')
 	} else {
 		dir.entry.map((item, index) => {
 			let file = glob.sync(item + '/**/*[^min].js')
@@ -156,10 +158,10 @@ gulp.task('jsWebpack', () => {
 	//入口文件筛选
 	if(dir.webpackEntry.length === 0 || dir.webpackEntry === null 
 		|| dir.webpackEntry === undefined) {
-		throw ('[webpack]', 'entry path need to configurated ')
+		console.log ('[webpack]', 'entry path need to configurated ')
 	} else { 
 		dir.webpackEntry.map((item, index) => {  
-			let file = glob.sync(item + '/**/index.js') 
+			let file = glob.sync(item + '/index.js') 
 			if(file.length === 0) {
 				 throw ('[webpack]', 'in ' + item + ' a index.js file is needed!')
 			}
@@ -183,7 +185,17 @@ gulp.task('jsWebpack', () => {
 
 
 gulp.task('htmlPage', () => {
-	let files = glob.sync(dir.entry + '/**/*.html' )
+	let files = []
+	//入口文件筛选
+	if(dir.entry.length === 0 || dir.entry === null 
+		|| dir.entry === undefined) {
+		console.log ('[htmlPage]', 'entry path need to configurated ')
+	} else {
+		dir.entry.map((item, index) => {
+			let file = glob.sync(item + '/**/*[^min].js')
+			files = files.concat(file)
+		})
+	}
 	console.log('js files: ' + files.toString())
 	files.map((item, index) => {
 		console.log('entry dir: ' + item)

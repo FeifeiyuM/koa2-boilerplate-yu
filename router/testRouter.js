@@ -112,4 +112,20 @@ router.get('/react-test', async (ctx, next) => {
 	await ctx.render('react-test/index')
 })
 
+router.get('/hug-app', async (ctx, next) => {
+	console.log(' in /hug-app')
+	await ctx.render('hug-app/index')
+})
+
+router.get('/huge-apps', async (ctx, next) => {
+	console.log(' in /huge-apps')
+	await ctx.render('huge-apps/index')
+})
+
+router.get('/huge-app', async (ctx, next) => {
+	console.log(' in /huge-apps')
+	await ctx.render('huge-app/index')
+})
+
+
 export default router
