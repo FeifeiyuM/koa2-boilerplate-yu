@@ -40,7 +40,7 @@ let outDirConfig = (file) => {
 		outDir = outDir.replace(/([a-zA-Z0-9_]+\.less)|([a-zA-Z0-9_]+\.js)/i, '')
 	}
 
-	return outDir
+	return outDir 
 }
 
 let jsBuild = (entryFile, output, isdev) => {
