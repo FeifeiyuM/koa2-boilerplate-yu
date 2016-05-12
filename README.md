@@ -5,7 +5,7 @@
 - 采用模板文件： [nunjucks]: https://mozilla.github.io/nunjucks/
 - HTTP请求代理: fetch-node
 - 
-- 打包： gulp (webpack: 支持客户端（browser） + 服务端（server.js))
+- 打包： gulp (webpack: 支持react客户端（browser） + 服务端（server.js))
 
 ## KOA2：
  - 模板设置 （koa-nunjucks-promise ）
