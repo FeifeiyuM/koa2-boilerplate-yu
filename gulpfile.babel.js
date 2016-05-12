@@ -16,11 +16,13 @@ import webpackConfig from './webpack.config.js'
 import runSequence from 'gulp-run-sequence'
 
 let isDevEnv = true  //是否为开发环境
-
+ 
 let dir = {
 	//配置路径时，尽量选择需要打包的路径，对已有的路径不要添加
 	entry: [],  //普通打包路径	
-	webpackEntry: ['./views/hug-app', './views/huge-app'],  //webpack打包路径,路径下必须包含index.js 根入口
+	 //webpack打包路径,路径下必须包含以client.js or index.js 的客户端入口文件
+	 //如果有服务端打包入口，命名为server.js
+	webpackEntry: ['./views/redux-render', './views/react-test'], 
 
 	output: './public',  //输出到静态文件所在路径
 }
@@ -40,7 +42,7 @@ let outDirConfig = (file) => {
 		outDir = outDir.replace(/([a-zA-Z0-9_]+\.less)|([a-zA-Z0-9_]+\.js)/i, '')
 	}
 
-	return outDir 
+	return outDir
 }
 
 let jsBuild = (entryFile, output, isdev) => {
@@ -59,10 +61,10 @@ let jsBuild = (entryFile, output, isdev) => {
 	}
 }
 
-let webpackBuild = (entryFile, outDir, isdev) => {
+//client side package of webpack
+let webpackClient = (entryFile, outDir, isdev) => {
 
-	let wpConfig = Object.create(webpackConfig)
-	console.log()
+	let wpConfig = Object.create(webpackConfig.clientConfig)
 	wpConfig.devtool = isdev ? 'cheap-module-eval-source-map' : null
 	wpConfig.entry = entryFile
 	wpConfig.output = {
@@ -70,6 +72,7 @@ let webpackBuild = (entryFile, outDir, isdev) => {
 		filename: '[name].bundle.js',
 		publicPath: '/static/'  //采用分片时需要“配置对”该路径
 	}
+
 	wpConfig.plugins = [  //插件配置
 		new webpack.optimize.OccurenceOrderPlugin(),
 	  	new webpack.HotModuleReplacementPlugin(),
@@ -90,6 +93,26 @@ let webpackBuild = (entryFile, outDir, isdev) => {
 	})
 }	
 
+//server side package of webpack
+let webpackServer = (entryFile, outDir) => {
+
+	let wpConfig = Object.create(webpackConfig.serverConfig)
+	wpConfig.entry = entryFile
+	wpConfig.output = {
+		path: outDir, 
+		filename: '[name].bundle.js',
+		publicPath: '/static/',
+		libraryTarget: "commonjs2"
+	}
+
+	webpack(wpConfig, function(err, stats) {
+		if(err) throw ('webpack ' + err.toString())
+		console.log('[webpack]', stats.toString({
+	  		colors: true,
+	 		progress: true
+		})) 
+	})
+}
 
 let cleancss = new LessPluginCleanCss({ advanced: true })
 let autoprefix = new LessPluginAutoPrefix({ 
@@ -110,6 +133,7 @@ let htmlReload = (entryFile) => {
 	return gulp.src(entryFile)
 		.pipe(livereload())
 }
+
 //less to css
 gulp.task('less2css', () => {
 	let files = []
@@ -154,35 +178,55 @@ gulp.task('jsBuild', () => {
 
 //采用webpack 打包
 gulp.task('jsWebpack', () => {
-	let files = [] 
+	let filesClient = [] 
+	let filesServer = []
 	//入口文件筛选
 	if(dir.webpackEntry.length === 0 || dir.webpackEntry === null 
 		|| dir.webpackEntry === undefined) {
 		console.log ('[webpack]', 'entry path need to configurated ')
 	} else { 
-		dir.webpackEntry.map((item, index) => {  
-			let file = glob.sync(item + '/index.js') 
-			if(file.length === 0) {
-				 throw ('[webpack]', 'in ' + item + ' a index.js file is needed!')
+		dir.webpackEntry.map((item, index) => {
+
+			let clientFile = glob.sync(item + '/client.js')
+			if(clientFile.length === 0) {
+				clientFile = glob.sync(item + '/index.js') 
+				if(clientFile.length === 0) {
+					 throw ('[webpack]', 'in ' + item + ' a index.js or client file is needed!')
+				}
 			}
-			files = files.concat(file)
+
+			filesClient = filesClient.concat(clientFile)
+
+			let serverFile = glob.sync(item + '/server.js')
+			if(serverFile.length === 0)	{
+				console.log('[webpack]', 'there is no server.js under this path')
+			}	
+
+			filesServer = filesServer.concat(serverFile)
 			
 		})
 	}
-	console.log('[webpack] files: ', files.toString())
+	console.log('[webpack] client files: ', filesClient.toString())
+	console.log('[webpack] server files: ', filesServer.toString())
 
-	let entryFile = {} //入口文件装配
-	files.map(( item, index ) => { 
+	let entryClient = {} //入口文件装配
+	filesClient.map(( item, index ) => { 
 		 //第一个replace去掉文件后缀，第二个replace去掉第一个文件路径(/views)
 		let filePath = item.replace(/\.js/, '').replace(/\.?\/[a-zA-Z0-9_]+/, '') 
 		console.log('filePath: ' + filePath)
-		entryFile[filePath] = item
+		entryClient[filePath] = item
 	})
 
-	return webpackBuild(entryFile, dir.output, isDevEnv )
+	let entryServer = {} //server side entry file
+
+	filesServer.map((item, index) => {
+		let filePath = item.replace(/\.js/, '').replace(/\.?\/[a-zA-Z0-9_]+/, '')
+		entryServer[filePath] = item
+	})
+
+	webpackClient(entryClient, dir.output, isDevEnv )
+	webpackServer(entryServer, dir.output)
 })
-
-
 
 gulp.task('htmlPage', () => {
 	let files = []

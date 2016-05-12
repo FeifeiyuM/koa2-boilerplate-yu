@@ -8,7 +8,7 @@ const rootRoute = {
 		path: '/',
 		component: require('./components/app'),  //引入组件
 		childRoutes: [
-     		 require('./routers/helloworld'),  //异步加载组件
+     		 require('./routers/helloworld'),   //异步加载组件
      		 require('./routers/profile') 
     	]
 	} ]

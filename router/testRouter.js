@@ -4,6 +4,10 @@ import { readFilePromise, writeFilePromise } from '../application/filehandle'
 const router = new Router()
 console.log('in router')
 
+//react dom
+//import rootDom from '../views/redux-render/server.js'
+import wholePage from '../public/redux-render/server.bundle.js'
+
 router.get('/', async (ctx, next) => {  //get请求，根路径
 	console.log('>>one')
 	await next()
@@ -125,6 +129,13 @@ router.get('/huge-apps', async (ctx, next) => {
 router.get('/huge-app', async (ctx, next) => {
 	console.log(' in /huge-apps')
 	await ctx.render('huge-app/index')
+})
+
+router.get('/redux-render', async (ctx, next) => {
+	console.log(' in /redux-render')
+	console.log(wholePage())
+	ctx.body = wholePage()
+
 })
 
 

@@ -4,7 +4,8 @@
 - 核心采用koa2 node server框架，
 - 采用模板文件： [nunjucks]: https://mozilla.github.io/nunjucks/
 - HTTP请求代理: fetch-node
-- 打包： gulp
+- 
+- 打包： gulp (webpack: 支持客户端（browser） + 服务端（server.js))
 
 ## KOA2：
  - 模板设置 （koa-nunjucks-promise ）
@@ -20,7 +21,7 @@
  - post 请求： 数据提交
  - 代理：即通过fetch api 代理请求接口数据
  - RESTful： get， post， delete，数据增、删、查。 通过读取本地JSON文件实现
- - React：'Hello world' 实例, React router 构建大型webapp实例（webpack分片）
+ - React：'Hello world' 实例
  
 
 ## 打包配置
@@ -30,8 +31,9 @@
 
 
   >  1、'entry' 为不是采用webpack工具打包的路径，路径书写格式为从当前目录开始，例：'./views/template'
-  >  2、'webpackEntry' 为采用webpack工具打包的路径，采用webpack打包时入口文件命名必须为index.js，如果采用es6开发的话，采用webpack打包    
-  >  3、 'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径, 假如： 服务器静态文件路径为'./public'; 入口文件为： './views/template/index.js'; 非webpack打包方式，输出文件为：'./public/template/index.min.js'; webpack打包方式，输出文件为：'./public/template/index.bundle.js'
+  >  2、'webpackEntry'为采用webpack工具打包的路径，采用webpack打包时必须包含客户端（browser端）的入口文件，且命名必须为client.js or index.js。如果需要打服务端渲染的包，请将其命名为server.js  
+  >  3、如果采用es6开发的话，用webpack打包
+  >  4、 'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径, 假如： 服务器静态文件路径为'./public'; 入口文件为： './views/template/index.js'; 非webpack打包方式，输出文件为：'./public/template/index.min.js'; webpack打包方式，输出文件为：'./public/template/index.bundle.js' or './public/template/server.bundle.js'
 
 ## 运行
  - npm start
