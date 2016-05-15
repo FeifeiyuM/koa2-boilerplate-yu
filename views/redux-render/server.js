@@ -12,6 +12,7 @@ let initState = {
 }
 let store = createStore(counterReducer, initState)
 let initialState = store.getState()
+console.dir('initialState', initialState)
 
 let CounterEle = (
 	<Provider store={store}>
@@ -25,22 +26,24 @@ let wholePage = (scriptPath) => {
   console.log('[page]', style)
   let html = renderToString( CounterEle )
 
-  return renderToString (
-    <html>
+//使用es6模板字符串，将参数代入html
+  return (   
+  `<html>
       <head>
         <title>React Server Side</title>
-        <style id='server-side-style' dangerouslySetInnerHTML={{__html: style}}></style>
+        <style id='server-side-style'>${style}</style>
       </head>
       <body>
-        <div id="root-index"  dangerouslySetInnerHTML={{__html: html}}></div>
+        <div id="root-index">${html}</div>
 
         <script>
-          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+            window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
         </script>
-         <script src="/static/common/common.js"></script>
+        <script src="/static/common/common.js"></script>
         <script src="/static/redux-render/client.bundle.js"></script>
       </body>
     </html>
+    `
   )
 }
 

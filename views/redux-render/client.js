@@ -7,7 +7,7 @@ import Counter from './counter'
 import { increment } from './action'
 
 const initState = window.__INITIAL_STATE__
-
+console.log('client side initState:', initState)
 let store = createStore(counterReducer, initState)
 
 let rootEle = (

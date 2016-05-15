@@ -19,10 +19,10 @@ let isDevEnv = true  //是否为开发环境
  
 let dir = {
 	//配置路径时，尽量选择需要打包的路径，对已有的路径不要添加
-	entry: [],  //普通打包路径	
+	entry: ['./views/template', './views/restful'],  //普通打包路径	
 	 //webpack打包路径,路径下必须包含以client.js or index.js 的客户端入口文件
 	 //如果有服务端打包入口，命名为server.js
-	webpackEntry: ['./views/redux-render', './views/react-test'], 
+	webpackEntry: ['./views/redux-render', './views/react-test', './views/hug-app'], 
 
 	output: './public',  //输出到静态文件所在路径
 }
@@ -80,9 +80,19 @@ let webpackClient = (entryFile, outDir, isdev) => {
 	  	new webpack.optimize.CommonsChunkPlugin('common/common.js'),
 	  	new webpack.optimize.UglifyJsPlugin({
 	      test: /(\.jsx|\.js)$/,
-	      compress: {warnings: false }
+	      compress: {warnings: true }
 	    })
 	]
+
+	if(!isdev) {
+		wpConfig.plugins.unshift(  //插入到插件数组的第一位,否则无效
+			new webpack.DefinePlugin({
+				"process.env": { 
+     				NODE_ENV: JSON.stringify("production") 
+  				}
+			})
+		)
+	}
 
 	webpack(wpConfig, function(err, stats) {
 		if(err) throw ('webpack ' + err.toString())
@@ -97,6 +107,7 @@ let webpackClient = (entryFile, outDir, isdev) => {
 let webpackServer = (entryFile, outDir) => {
 
 	let wpConfig = Object.create(webpackConfig.serverConfig)
+
 	wpConfig.entry = entryFile
 	wpConfig.output = {
 		path: outDir, 

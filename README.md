@@ -1,11 +1,17 @@
 # KOA2 示例工程
 
 ##采用技术：
-- 核心采用koa2 node server框架，
-- 采用模板文件： [nunjucks]: https://mozilla.github.io/nunjucks/
-- HTTP请求代理: fetch-node
-- 
-- 打包： gulp (webpack: 支持react客户端（browser） + 服务端（server.js))
+ - 核心采用koa2 node server框架，
+ - 采用模板文件： [nunjucks]: https://mozilla.github.io/nunjucks/
+ - HTTP请求代理: fetch-node
+ - 打包： gulp (webpack: 支持react客户端（browser） + 服务端（server.js))
+ 
+
+##start:
+ - npm install （安装依赖）
+ - npm start （启动服务）
+ - 访问本地地址： http://localhost:3000/
+ - 
 
 ## KOA2：
  - 模板设置 （koa-nunjucks-promise ）
@@ -27,7 +33,7 @@
 ## 打包配置
   - 所有配置项在文件 gulpfile.babel.js 中，
   - isDevEvn 配置环境，true为开发环境（代码不压缩），false 为生产环境（代码压缩,删除调试配置)
-  - 打包路径配置：
+  - 打包路径配置：(可以根据需要，配置需要打包的路径，尽量不要将所有项目都加入到打包路径)
 
 
   >  1、'entry' 为不是采用webpack工具打包的路径，路径书写格式为从当前目录开始，例：'./views/template'
@@ -35,11 +41,7 @@
   >  3、如果采用es6开发的话，用webpack打包      
   >  4、'output' 为打包后文件输出路径，输出路径需配置为服务器静态文件路径, 假如： 服务器静态文件路径为'./public'; 入口文件为： './views/template/index.js'; 非webpack打包方式，输出文件为：'./public/template/index.min.js'; webpack打包方式，输出文件为：'./public/template/index.bundle.js' or './public/template/server.bundle.js'
 
-## 运行
- - npm start
- - gulp build 前端页面，生产环境打包
+## 打包
+ - gulp build 生产环境打包
 
 
-## 运行
- - npm start
- - gulp build 前端页面，生产环境打包

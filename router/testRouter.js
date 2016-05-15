@@ -9,20 +9,25 @@ console.log('in router')
 import wholePage from '../public/redux-render/server.bundle.js'
 
 router.get('/', async (ctx, next) => {  //get请求，根路径
+
+	await ctx.render('start/index', {title: 'koa start'})
+})
+
+router.get('/helloworld', async (ctx, next) => {  //get请求，根路径
 	console.log('>>one')
 	await next()
 	console.log('<<one')
 	ctx.body = 'Hello World'
 })
 
-router.get('/start', async (ctx, next) => {  //get请求，打开测试模板
-	console.log('in /start')
+router.get('/nunjucks', async (ctx, next) => {  //get请求，打开测试模板
+	console.log('in /nunjucks')
 
 	await ctx.render('template/start', {title: 'koa start'})
 })
 
-router.post('/start', async (ctx, next ) => {  //post请求
-	console.log('/start/post')
+router.post('/nunjucks', async (ctx, next ) => {  //post请求
+	console.log('/nunjucks/post')
 
 	let reqParam = {  //请求参数提取
 		userName: ctx.request.body.user_name,
@@ -121,10 +126,6 @@ router.get('/hug-app', async (ctx, next) => {
 	await ctx.render('hug-app/index')
 })
 
-router.get('/huge-apps', async (ctx, next) => {
-	console.log(' in /huge-apps')
-	await ctx.render('huge-apps/index')
-})
 
 router.get('/huge-app', async (ctx, next) => {
 	console.log(' in /huge-apps')
@@ -133,10 +134,31 @@ router.get('/huge-app', async (ctx, next) => {
 
 router.get('/redux-render', async (ctx, next) => {
 	console.log(' in /redux-render')
-	console.log(wholePage())
+
 	ctx.body = wholePage()
 
 })
 
+router.get('/win-val', async (ctx, next) => {
+	console.log(' in /win-val')
+
+	let initialState = {cnt: 3}
+
+	ctx.body = `
+    <!doctype html>
+    <html>
+      <head>
+        <title>Redux Universal Example</title>
+      </head>
+      <body>
+        <h1> window.__INITIAL_STATE__ </h1>
+        <script>
+          window.__INITIAL_STATE__ = ${JSON.stringify(initialState)}
+        </script>
+      </body>
+    </html>
+    `
+
+})
 
 export default router
