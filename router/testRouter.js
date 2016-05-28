@@ -161,4 +161,24 @@ router.get('/win-val', async (ctx, next) => {
 
 })
 
+
+router.get('/session', async(ctx, next) => {
+	console.log('in /session')
+	let n = ctx.session.views || 0
+	ctx.session.views = ++n
+	ctx.cookies.set('name', 'feifeiyu', {signed: true})
+	if(ctx.session.views > 4) {
+		ctx.session.views = null
+	}
+	ctx.body = n + ' views'
+})
+
+router.get('/session2', async(ctx, next) => {
+	console.log(' in /session2')
+	ctx.cookies.set('name2', 'feifeiyuok', {signed: true})
+	let cook = ctx.cookies.get('name2')
+	// console.log(ctx.cookies)
+	ctx.body = cook
+})
+
 export default router

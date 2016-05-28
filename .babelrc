@@ -1,7 +1,9 @@
 {
-  "presets": ["es2015-node5", 'react'],
+  "presets": ["es2015-node4", 'react'],
   "plugins": [
     "transform-async-to-generator",
     "syntax-async-functions"
   ]
 }
+
+

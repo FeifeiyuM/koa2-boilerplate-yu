@@ -5,6 +5,7 @@ import logger from 'koa-logger'
 import mount from 'koa-mount'
 import server from 'koa-static'
 import bodyParser from 'koa-bodyparser'
+import session from 'koa-session'
 
 import testRouter from './router/testRouter'
 
@@ -25,6 +26,8 @@ app.use(nunjucksViews(`${__dirname}/views`, {  //模板插件
 app.use(mount('/static', server(`${__dirname}/public`)))  //设置静态文件路径
 app.use(logger())  //日志
 app.use(bodyParser())  //参数解析
+app.keys = ['Feifeiyu']
+app.use(convert(session(app)))  //session
 app.use(testRouter.routes())  //路由
 	.use(testRouter.allowedMethods())
 
